@@ -9,19 +9,13 @@ public class Tests
     private readonly Family famB = new (new[] { 16, 16, 16, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 12, 12, 12, 12, 8, 8 });
     private readonly Family famC = new (new[] { 15, 15, 15, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 21, 21, 21, 21, 15, 15, 15 });
 
-    [SetUp]
-    public void Setup()
-    {
-    }
-
     //It's an interesting choice to start with the exceptions. I generally work on "core" functionality or happy path, but everyone approaches it differently.
     [Test]
     public void TheBabysitterStartsNoEarlierThanFivePM()
     {
-        var bs = new Babysitter();
         //Nice use of asserting an exception is thrown
         //bs reminds me of the incredibles short (https://youtu.be/Ybar3Q0Caf4?t=210)
-        var ex = Assert.Throws<ArgumentException>(() => bs.CalculatePay(15, 19, famA));
+        var ex = Assert.Throws<ArgumentException>(() => famA.CalculatePay(15, 19));
         //Checking the exception message is very fancy. I always wrestle with if it's worth testing the message of an exception, but it does look nice.
         Assert.That(ex.Message, Is.EqualTo("Start Hour must be 5:00 PM or after"));
     }
@@ -29,8 +23,7 @@ public class Tests
     [Test]
     public void TheBabysitterEndsNoLaterThanFourAM()
     {
-        var bs = new Babysitter();
-        var ex = Assert.Throws<ArgumentException>(() => bs.CalculatePay(20, 5, famA));
+        var ex = Assert.Throws<ArgumentException>(() => famA.CalculatePay(20, 5));
         Assert.That(ex.Message, Is.EqualTo("End Hour must be 4:00 AM or earlier"));
     }
 
@@ -38,15 +31,13 @@ public class Tests
     [Test]
     public void TheBabysitterCanStartInPMAndEndInAM()
     {
-        var bs = new Babysitter();
-        Assert.DoesNotThrow(() => bs.CalculatePay(17, 4, famA));
+        Assert.DoesNotThrow(() => famA.CalculatePay(17, 4));
     }
 
     [Test]
     public void StartTimeCannotBeAfterEndTime()
     {
-        var bs = new Babysitter();
-        var ex = Assert.Throws<ArgumentException>(() => bs.CalculatePay(20, 18, famA));
+        var ex = Assert.Throws<ArgumentException>(() => famA.CalculatePay(20, 18));
         Assert.That(ex.Message, Is.EqualTo("Start Time cannot be after End Time"));
     }
 
@@ -62,8 +53,7 @@ public class Tests
     [Test]
     public void FamilyAPays190ForAFullNightShift()
     {
-        var bs = new Babysitter();
-        var pay = bs.CalculatePay(17, 4, famA);
+        var pay = famA.CalculatePay(17, 4);
         Assert.That(pay, Is.EqualTo(190));
     }
 
@@ -81,16 +71,14 @@ public class Tests
     [Test]
     public void FamilyBPays140ForAFullNightShift()
     {
-        var bs = new Babysitter();
-        var pay = bs.CalculatePay(17, 4, famB);
+        var pay = famB.CalculatePay(17, 4);
         Assert.That(pay, Is.EqualTo(140));
     }
 
     [Test]
     public void FamilyCPays189ForAFullNightShift()
     {
-        var bs = new Babysitter();
-        var pay = bs.CalculatePay(17, 4, famC);
+        var pay = famC.CalculatePay(17, 4);
         Assert.That(pay, Is.EqualTo(189));
     }
 }

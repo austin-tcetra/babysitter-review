@@ -30,12 +30,3 @@ public class Family
         return totalPay;
     }
 }
-
-//Is this class needed, or could we just call the function on the family?
-public class Babysitter
-{
-    public int CalculatePay(int startHour, int endHour, Family family)
-    {
-        return family.CalculatePay(startHour, endHour);
-    }
-}
